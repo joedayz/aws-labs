@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Fun Facts Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(16, 185, 129, 0.1);
+            padding: 50px;
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            transform: rotate(-5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .icon-wrapper:hover {
+            transform: rotate(5deg) scale(1.05);
+        }
+
+        .title {
+            font-size: 2.8rem;
+            color: #047857;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .fact-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #86efac;
+            border-radius: 16px;
+            padding: 35px;
+            margin: 35px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .fact-box::before {
+            content: '"';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 4rem;
+            color: #10b981;
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+
+        .fact-box:hover {
+            border-color: #10b981;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .fact-text {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #065f46;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .loading {
+            color: #059669;
+            font-style: italic;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .generate-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .generate-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .generate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .generate-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tech-info {
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 2px solid #d1fae5;
+            font-size: 0.9rem;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tech-info::before {
+            content: '⚡';
+            font-size: 1.2rem;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid #fca5a5;
+            font-weight: 500;
+        }
+
+        .divider {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+            margin: 30px auto;
+            border-radius: 2px;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 35px 25px;
+            }
+
+            .title {
+                font-size: 2.2rem;
+            }
+
+            .fact-text {
+                font-size: 1.1rem;
+            }
+
+            .icon-wrapper {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .generate-btn {
+                padding: 16px 35px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="icon-wrapper">☁️</div>
+        <h1 class="title">Java Fun Facts</h1>
+        <p class="subtitle">Discover amazing facts about Java!</p>
+        
+        <div class="divider"></div>
+
+        <div class="fact-box">
+            <p class="fact-text" id="factText">Click the button below to get a fun java fact!</p>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="getFact()">
+            <span>Generate Fun Fact</span>
+        </button>
+
+        <div class="tech-info">
+            Powered by AWS Lambda + API Gateway + DynamoDB + Bedrock AI
+        </div>
+    </div>
+
+    <script>
+        // 👇 REPLACE THIS WITH YOUR ACTUAL API ENDPOINT
+        const API_URL = 'https://YOUR-API-ID.execute-api.us-east-1.amazonaws.com/joefact';
+
+        async function getFact() {
+            const btn = document.getElementById('generateBtn');
+            const factText = document.getElementById('factText');
+
+            // Show loading
+            btn.disabled = true;
+            btn.querySelector('span').textContent = 'Loading...';
+            factText.textContent = 'Getting your fact...';
+            factText.className = 'fact-text loading';
+
+            try {
+                // Call your API
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                // Show the fact
+                factText.textContent = data.fact;
+                factText.className = 'fact-text';
+
+            } catch (error) {
+                // Show error
+                factText.innerHTML = '<div class="error">Could not fetch fact. Check your API endpoint!</div>';
+                console.error('Error:', error);
+            }
+
+            // Reset button
+            btn.disabled = false;
+            btn.querySelector('span').textContent = 'Generate Another Fact';
+        }
+
+        // Check if API is configured
+        window.onload = function() {
+            if (API_URL.includes('YOUR-API-ID')) {
+                document.getElementById('factText').innerHTML =
+                    '<div class="error">Please update API_URL in the script with your actual API Gateway endpoint</div>';
+            }
+        };
+    </script>
+</body>
+
+</html>
+
