@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Polly - Text to Speech | JoeDayz</title>
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="static/scripts.js"></script>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">
+            <h1 class="logo-text">JoeDayz</h1>
+            <span class="logo-subtitle">AWS Labs</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="container">
+          <div class="page-header">
+            <h2 class="page-title">Detect PII Entities and Synthesize Speech</h2>
+            <p class="page-description">Detecta información personal identificable y convierte texto a voz usando Amazon Polly</p>
+          </div>
+
+          <div class="card">
+            <form id="synthesizeForm" method="GET" action="/read">
+              <div class="form-group">
+                <label for="voice" class="form-label">Select a voice</label>
+                <select id="voice" name="voiceId" class="form-select" disabled>
+                  <option value="">Choose a voice...</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="textInput" class="form-label">Input text</label>
+                <textarea 
+                  id="textInput" 
+                  class="form-textarea" 
+                  maxlength="1000" 
+                  minlength="1" 
+                  name="text" 
+                  placeholder="Add text here...">Hi, my name is John Doe, and I live in Virginia, USA. I have a bank account USA40AMCN0011345543234678, and my Debit card is 0234-2804-5823-4038. You can contact me at john.doe@gmail.com
+                </textarea>
+                <div class="char-counter">
+                  <span id="charCount">0</span> / 1000 characters
+                </div>
+              </div>
+
+              <div class="button-group">
+                <button type="button" id="DetectPIIEntities" class="btn btn-secondary">
+                  <span class="btn-icon">🔍</span>
+                  Detect PII Entities
+                </button>
+                <button type="submit" id="SynthesizeSpeech" class="btn btn-primary" disabled>
+                  <span class="btn-icon">🎤</span>
+                  Synthesize Speech
+                </button>
+              </div>
+            </form>
+
+            <audio id="player" controls class="audio-player"></audio>
+          </div>
+
+          <div class="results-card">
+            <h3 class="results-title">Detected Entities</h3>
+            <ul id="entityresult" class="entity-list"></ul>
+          </div>
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-content">
+          <p>&copy; 2025 JoeDayz. Powered by AWS Polly & Comprehend</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
